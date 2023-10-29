@@ -9,7 +9,7 @@ project "openal"
   systemversion("latest")
 
   targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
-  objdir ("%{wks.location}/build/" .. outputdir .. "%{prj.name}")
+  objdir ("%{wks.location}/build/" .. outputdir .. "/%{prj.name}")
 
   IncludeDir["openal"] = "%{wks.location}/libs/openal/include"
 
@@ -20,16 +20,16 @@ project "openal"
   }
 
   buildcommands {
-    "cmake -DLIBTYPE='STATIC' -DCMAKE_BUILD_TYPE='%{cfg.buildcfg}' -S . -B ./build",
+    "cmake -DLIBTYPE='STATIC' -DCMAKE_BUILD_TYPE='%{cfg.buildcfg}' -S ./ -B ./build",
     "cmake --build ./build",
-    "{COPYFILE} ./build/%{cfg.buildcfg}/*  %{cfg.buildtarget.directory}/"
+    "{COPYFILE} ./build/%{cfg.buildcfg}/*  %{cfg.linktarget.directory}" -- copy from cmake build to premake targetdir
   }
-    
+
   rebuildcommands {
     "{RMDIR} ./build",
-    "cmake -DLIBTYPE='STATIC' -DCMAKE_BUILD_TYPE='%{cfg.buildcfg}' -S . -B ./build",
+    "cmake -DLIBTYPE='STATIC' -DCMAKE_BUILD_TYPE='%{cfg.buildcfg}' -S ./ -B ./build",
     "cmake --build ./build",
-    "{COPYFILE} ./build/%{cfg.buildcfg}/*  %{cfg.buildtarget.directory}/"
+    "{COPYFILE} ./build/%{cfg.buildcfg}/*  %{cfg.linktarget.directory}" -- copy from cmake build to premake targetdir
   }
 
   cleancommands {

@@ -1653,22 +1653,3 @@ if(ALSOFT_UTILS)
     endif()
     message(STATUS "")
 endif()
-
-
-# Add a static library with common functions used by multiple example targets
-#add_library(al-excommon STATIC EXCLUDE_FROM_ALL
-#    examples/common/alhelpers.c
-#    examples/common/alhelpers.h)
-#target_compile_definitions(al-excommon PUBLIC ${CPP_DEFS})
-#target_include_directories(al-excommon PUBLIC ${OpenAL_SOURCE_DIR}/common)
-#target_compile_options(al-excommon PUBLIC ${C_FLAGS})
-#target_link_libraries(al-excommon PUBLIC OpenAL PRIVATE ${RT_LIB})
-#set_target_properties(al-excommon PROPERTIES ${DEFAULT_TARGET_PROPS})
-
-#if(EXTRA_INSTALLS)
-#    install(TARGETS ${EXTRA_INSTALLS}
-#        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-#        BUNDLE  DESTINATION ${CMAKE_INSTALL_BINDIR}
-#        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-#        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
-#endif()
