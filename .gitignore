@@ -1,7 +1,18 @@
-build*/
+bin/
+build/
 winbuild
 win64build
 .vs/
+*.a
+*.so
+*.la
+*.dll
+*.lai
+*.lib
+*.dylib
+*.sln
+*.vcxproj
+*.vcxproj.*
 
 ## kdevelop
 *.kdev4
