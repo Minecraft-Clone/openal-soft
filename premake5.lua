@@ -13,6 +13,10 @@ project "openal"
 
   IncludeDir["openal"] = "%{wks.location}/libs/openal/include"
 
+  removedefines {
+      "AL_LIBTYPE_STATIC" -- ensure AL_LIBTYPE_STATIC is not defined during openal compilation
+  }
+
   files {
     "premake5.lua",
     "**.hpp",
