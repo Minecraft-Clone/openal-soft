@@ -46,14 +46,20 @@ project "openal"
       "OpenAL_EXPORTS"
     }
 
-   links {
-     "winmm"
-   }
+    links {
+      "winmm"
+    }
+
+  filter "system:linux"
+    pic "On"
+  
+  filter "system:macosx"
+    pic "On"
 
   filter "configurations:Debug"
     runtime "Debug"
-    symbols "on"
+    symbols "On"
 
   filter "configurations:Release"
     runtime "Release"
-    optimize "on"
+    optimize "On"
