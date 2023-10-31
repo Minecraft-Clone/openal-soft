@@ -1,41 +1,59 @@
--- openal
-
 project "openal"
-  kind("Makefile")
-  language("C++")
-  cdialect("C11")
-  cppdialect("C++17")
-  staticruntime("On")
-  systemversion("latest")
+  kind "StaticLib"
+  language "C++"
+  cppdialect "C++14"
+  staticruntime "on"
+  systemversion "latest"
 
   targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
-  objdir ("%{wks.location}/build/" .. outputdir .. "/%{prj.name}")
+  objdir ("%{wks.location}/build/" .. outputdir .. "%{prj.name}")
 
   IncludeDir["openal"] = "%{wks.location}/libs/openal/include"
 
-  removedefines {
-      "AL_LIBTYPE_STATIC" -- ensure AL_LIBTYPE_STATIC is not defined during openal compilation
+  includedirs {
+    "src",
+    "src/alc",
+    "src/common",
+    "include",
+    "include/AL"
   }
 
   files {
     "premake5.lua",
-    "**.hpp",
-    "**.cpp",
+    "src/**.h",
+    "src/**.cpp"
   }
 
-  buildcommands {
-    "cmake -DLIBTYPE='STATIC' -DCMAKE_BUILD_TYPE='%{cfg.buildcfg}' -S ./ -B ./build",
-    "cmake --build ./build",
-    "{COPYFILE} ./build/%{cfg.buildcfg}/*  %{cfg.linktarget.directory}" -- copy from cmake build to premake targetdir
+  excludes {
+    "src/alc/mixer/mixer_neon.cpp"
   }
 
-  rebuildcommands {
-    "{RMDIR} ./build",
-    "cmake -DLIBTYPE='STATIC' -DCMAKE_BUILD_TYPE='%{cfg.buildcfg}' -S ./ -B ./build",
-    "cmake --build ./build",
-    "{COPYFILE} ./build/%{cfg.buildcfg}/*  %{cfg.linktarget.directory}" -- copy from cmake build to premake targetdir
+  defines {
+    "AL_LIBTYPE_STATIC"
   }
+  
+  filter "system:windows"
+    defines {
+      "WIN32",
+      "_WINDOWS",
+      "AL_BUILD_LIBRARY",
+      "AL_ALEXT_PROTOTYPES",
+      "_WIN32",
+      "_WIN32_WINNT=0x0502",
+      "_CRT_SECURE_NO_WARNINGS",
+      "NOMINMAX",
+      "CMAKE_INTDIR=\"Debug\"",
+      "OpenAL_EXPORTS"
+    }
 
-  cleancommands {
-    "{RMDIR} ./build"
-  }
+   links {
+     "winmm"
+   }
+
+  filter "configurations:Debug"
+    runtime "Debug"
+    symbols "on"
+
+  filter "configurations:Release"
+    runtime "Release"
+    optimize "on"
